@@ -325,7 +325,10 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
     <button class="mb" onclick="openDrawer()"><svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M1 1H17M1 7H11M1 13H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
     <span class="acb" id="acb">&#10024; STRATE</span>
     <span class="group-badge" id="group-badge" style="display:none"><span class="gb-dot" style="background:#60A5FA"></span><span class="gb-dot" style="background:#34D399"></span><span class="gb-dot" style="background:#A78BFA"></span><span id="gb-label">Groupe</span></span>
-    <div class="hd-r"><div class="hd-dot"></div></div>
+    <div class="hd-r">
+      <button id="mode-btn" onclick="toggleMode()" style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:2px 8px;font-size:.6rem;font-family:'JetBrains Mono',monospace;color:var(--text2);cursor:pointer;transition:all .2s">RAPIDE</button>
+      <div class="hd-dot"></div>
+    </div>
   </div>
 
   <div class="msgs" id="msgs">
@@ -414,7 +417,19 @@ function addMsg(t,r){const m=document.createElement('div');m.className=r==='u'?'
 function cpMsg(b){const bb=b.closest('.mc').querySelector('.bb');navigator.clipboard.writeText(bb.textContent).catch(()=>{});b.textContent='Copi\u00e9 !';b.style.color='var(--accent)';const f=document.createElement('span');f.className='cf';f.textContent='Copi\u00e9';b.closest('.mc').appendChild(f);setTimeout(()=>{f.remove();b.textContent='Copier';b.style.color=''},1500)}
 
 // Stream
-async function doStream(t){streaming=true;const b=addMsg('','a');const t0=Date.now();let tc=0;if(DEMO){await new Promise(r=>setTimeout(r,600+Math.random()*400));await sim(b,t,t0);streaming=false;return}try{const ac=new AbortController();const to=setTimeout(()=>ac.abort(),20000);const r=await fetch(`${BE}/api/chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:t,context:ctx}),signal:ac.signal});clearTimeout(to);if(!r.ok)throw new Error(r.status);const rd=r.body.getReader();const dc=new TextDecoder();let ft='';b.innerHTML='';b.classList.add('cursor-blink');while(true){const{done,value}=await rd.read();if(done)break;for(const ln of dc.decode(value,{stream:true}).split('\n')){if(ln.startsWith('data: ')){const d=ln.slice(6);if(d==='[DONE]')continue;try{const p=JSON.parse(d);if(p.text){ft+=p.text;tc+=p.text.split(/\s+/).length;b.innerHTML=md(ft);utk(tc,t0);if(!scrolled)toBot()}}catch{ft+=d;b.innerHTML=md(ft);if(!scrolled)toBot()}}}}b.classList.remove('cursor-blink')}catch{b.innerHTML='';b.classList.remove('cursor-blink');await sim(b,t,t0)}streaming=false;saveConvo()}
+async function doStream(t){streaming=true;const b=addMsg('','a');const t0=Date.now();let tc=0;
+  // Mode RAPIDE = reponses demo simulees, Mode PUISSANT = vrai Claude
+  if(!powerMode||DEMO){await new Promise(r=>setTimeout(r,600+Math.random()*400));await sim(b,t,t0);streaming=false;saveConvo();return}
+  try{const ac=new AbortController();const to=setTimeout(()=>ac.abort(),60000);
+    const r=await fetch(`${BE}/api/chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:t,context:ctx}),signal:ac.signal});
+    clearTimeout(to);if(!r.ok)throw new Error(r.status);
+    const rd=r.body.getReader();const dc=new TextDecoder();let ft='';b.innerHTML='';b.classList.add('cursor-blink');
+    while(true){const{done,value}=await rd.read();if(done)break;
+      for(const ln of dc.decode(value,{stream:true}).split('\n')){if(ln.startsWith('data: ')){const d=ln.slice(6);if(d==='[DONE]')continue;
+        try{const p=JSON.parse(d);if(p.text){ft+=p.text;tc+=p.text.split(/\s+/).length;b.innerHTML=md(ft);utk(tc,t0);if(!scrolled)toBot()}}catch{ft+=d;b.innerHTML=md(ft);if(!scrolled)toBot()}
+      }}}b.classList.remove('cursor-blink')}
+  catch{b.innerHTML='';b.classList.remove('cursor-blink');await sim(b,t,t0)}
+  streaming=false;saveConvo()}
 function utk(n,t0){const s=(Date.now()-t0)/1000;const sp=s>0?Math.round(n/s):0;document.getElementById('dts').textContent=`${sp} tok/s`}
 
 // Expert responses
@@ -635,6 +650,15 @@ function md(t){
   // Line breaks
   t=t.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
   return t;
+}
+
+// ═══ MODE TOGGLE ═══
+let powerMode=false;
+function toggleMode(){
+  powerMode=!powerMode;
+  const btn=document.getElementById('mode-btn');
+  if(powerMode){btn.textContent='PUISSANT';btn.style.background='var(--accent-dim)';btn.style.borderColor='var(--border-a)';btn.style.color='var(--accent)';showToast('Mode puissant activ\u00e9')}
+  else{btn.textContent='RAPIDE';btn.style.background='var(--bg3)';btn.style.borderColor='var(--border)';btn.style.color='var(--text2)';showToast('Mode rapide activ\u00e9')}
 }
 
 // ═══ GROUP MODE ═══
