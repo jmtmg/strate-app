@@ -704,42 +704,68 @@ send=function(){
 
 async function doGroupStream(question){
   streaming=true;
+  if(!DEMO){
+    // REAL MODE: call backend /api/group-chat
+    try{
+      const r=await fetch(`${BE}/api/group-chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:question,agents:groupAgents.map(a=>a.id)})});
+      if(!r.ok)throw new Error(r.status);
+      const rd=r.body.getReader();const dc=new TextDecoder();
+      let currentAgent=null,currentBb=null,currentText='';
+      while(true){
+        const{done,value}=await rd.read();if(done)break;
+        for(const ln of dc.decode(value,{stream:true}).split('\n')){
+          if(!ln.startsWith('data: '))continue;
+          const d=ln.slice(6);if(d==='[DONE]')continue;
+          try{
+            const p=JSON.parse(d);
+            if(p.agent_start){
+              const agent=groupAgents.find(a=>a.id===p.agent_start);if(!agent)continue;
+              currentAgent=agent;currentText='';
+              const labelDiv=document.createElement('div');labelDiv.className='agent-label';
+              labelDiv.innerHTML=`<span class="al-name" style="color:${agentColor(agent.color)}">${agent.icon} ${agent.name}</span><span class="al-spec">${agent.spec}</span>`;
+              M.appendChild(labelDiv);
+              const m=document.createElement('div');m.className=`msg msg-a agent-${agent.color}`;
+              const av=document.createElement('div');av.className='av';av.textContent=agent.initials;
+              const mc=document.createElement('div');mc.className='mc';
+              currentBb=document.createElement('div');currentBb.className='bb cursor-blink';
+              mc.appendChild(currentBb);
+              const ac=document.createElement('div');ac.className='ma';ac.innerHTML='<button class="cp" onclick="cpMsg(this)">Copier</button>';
+              mc.appendChild(ac);m.appendChild(av);m.appendChild(mc);M.appendChild(m);
+              toBot();
+            }else if(p.text&&currentBb){
+              currentText+=p.text;currentBb.innerHTML=md(currentText);if(!scrolled)toBot();
+            }else if(p.agent_done&&currentBb){
+              currentBb.classList.remove('cursor-blink');
+            }
+          }catch{}
+        }
+      }
+      streaming=false;saveConvo();return;
+    }catch(e){/* fallback to demo */}
+  }
+  // DEMO MODE: simulated responses
   let prevResponses=[];
   for(let i=0;i<groupAgents.length;i++){
     const agent=groupAgents[i];
-    // Agent label
-    const labelDiv=document.createElement('div');
-    labelDiv.className='agent-label';
+    const labelDiv=document.createElement('div');labelDiv.className='agent-label';
     labelDiv.innerHTML=`<span class="al-name" style="color:${agentColor(agent.color)}">${agent.icon} ${agent.name}</span><span class="al-spec">${agent.spec}</span>`;
-    // Thinking indicator
-    const thinkDiv=document.createElement('div');
-    thinkDiv.className='agent-thinking';
+    const thinkDiv=document.createElement('div');thinkDiv.className='agent-thinking';
     thinkDiv.innerHTML=`<span style="color:${agentColor(agent.color)}">${agent.initials}</span> analyse...`;
-    M.appendChild(labelDiv);
-    M.appendChild(thinkDiv);
-    toBot();
+    M.appendChild(labelDiv);M.appendChild(thinkDiv);toBot();
     await new Promise(r=>setTimeout(r,400+Math.random()*300));
     thinkDiv.remove();
-    // Add message with agent styling
-    const m=document.createElement('div');
-    m.className=`msg msg-a agent-${agent.color}`;
+    const m=document.createElement('div');m.className=`msg msg-a agent-${agent.color}`;
     const av=document.createElement('div');av.className='av';av.textContent=agent.initials;
     const mc=document.createElement('div');mc.className='mc';
     const bb=document.createElement('div');bb.className='bb';
     mc.appendChild(bb);
     const ac=document.createElement('div');ac.className='ma';ac.innerHTML='<button class="cp" onclick="cpMsg(this)">Copier</button>';
-    mc.appendChild(ac);
-    m.appendChild(av);m.appendChild(mc);M.appendChild(m);
-    // Simulate response
+    mc.appendChild(ac);m.appendChild(av);m.appendChild(mc);M.appendChild(m);
     const resp=await getAgentResponse(agent,question,prevResponses);
-    let d='',tc=0;bb.classList.add('cursor-blink');
-    for(let j=0;j<resp.length;j++){
-      d+=resp[j];if(resp[j]===' ')tc++;
-      bb.innerHTML=md(d);
-      if(!scrolled)toBot();
+    let d='';bb.classList.add('cursor-blink');
+    for(let j=0;j<resp.length;j++){d+=resp[j];bb.innerHTML=md(d);if(!scrolled)toBot();
       const dl=resp[j]==='\n'?15:resp[j]==='.'?25:resp[j]===','?12:Math.random()*6+2;
-      await new Promise(r=>setTimeout(r,dl));
-    }
+      await new Promise(r=>setTimeout(r,dl));}
     bb.classList.remove('cursor-blink');
     prevResponses.push({agent:agent.name,text:resp});
   }
