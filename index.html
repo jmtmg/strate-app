@@ -301,8 +301,8 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 </aside>
 
 <!-- GROUP CREATION PANEL -->
-<div class="dov" id="gpov" onclick="closeGroupPanel()"></div>
-<div class="drawer" id="gpanel" style="left:auto;right:0;border-right:none;border-left:1px solid var(--border)">
+<div class="dov" id="gpov" style="z-index:102" onclick="closeGroupPanel()"></div>
+<div id="gpanel" style="position:fixed;top:0;right:0;width:var(--drawer-w);height:100dvh;background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .32s var(--ease);z-index:103;will-change:transform">
   <div class="dh">
     <div class="dl"><span class="dm" style="background:linear-gradient(135deg,#60A5FA,#A78BFA)">G</span><span class="dn">Cr&#233;er un groupe</span></div>
     <button class="dc" onclick="closeGroupPanel()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
@@ -632,17 +632,16 @@ let groupMode=false,groupAgents=[];
 
 function openGroupPanel(){
   closeDrawer();
-  const list=document.getElementById('gp-agents');
-  list.innerHTML=AGENTS_CATALOG.map(a=>`<div class="gp-agent" data-id="${a.id}" onclick="toggleAgent(this,'${a.id}')"><span class="gpa-dot" style="background:var(--${a.color==='blue'?'':a.color==='emerald'?'green':a.color==='amber'?'accent':a.color})"></span><div><div class="gpa-name">${a.icon} ${a.name}</div><div class="gpa-spec">${a.spec}</div></div><span class="gpa-check">\u2713</span></div>`).join('');
-  // Fix dot colors
-  list.querySelectorAll('.gpa-dot').forEach((dot,i)=>{
+  setTimeout(()=>{
+    const list=document.getElementById('gp-agents');
     const colors=['#60A5FA','#34D399','#A78BFA','#FB7185','#C9A84C'];
-    dot.style.background=colors[i];
-  });
-  document.getElementById('gpanel').classList.add('on');
-  document.getElementById('gpov').classList.add('on');
+    list.innerHTML=AGENTS_CATALOG.map((a,i)=>`<div class="gp-agent" data-id="${a.id}" onclick="toggleAgent(this)"><span class="gpa-dot" style="background:${colors[i]}"></span><div><div class="gpa-name">${a.icon} ${a.name}</div><div class="gpa-spec">${a.spec}</div></div><span class="gpa-check">\u2713</span></div>`).join('');
+    document.getElementById('gpanel').style.transform='translateX(0)';
+    document.getElementById('gpanel').style.boxShadow='-4px 0 40px rgba(0,0,0,.5)';
+    document.getElementById('gpov').classList.add('on');
+  },350);
 }
-function closeGroupPanel(){document.getElementById('gpanel').classList.remove('on');document.getElementById('gpov').classList.remove('on')}
+function closeGroupPanel(){document.getElementById('gpanel').style.transform='translateX(100%)';document.getElementById('gpanel').style.boxShadow='none';document.getElementById('gpov').classList.remove('on')}
 function toggleAgent(el,id){el.classList.toggle('selected')}
 function createGroup(){
   const selected=Array.from(document.querySelectorAll('.gp-agent.selected')).map(el=>el.dataset.id);
