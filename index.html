@@ -193,6 +193,8 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .agent-violet .al-name{color:#A78BFA}
 .agent-rose .al-name{color:#FB7185}
 .agent-amber .al-name{color:var(--accent)}
+.agent-cyan .av{background:rgba(34,211,238,.15)!important;color:#22D3EE!important;border-color:rgba(34,211,238,.3)!important}
+.agent-cyan .al-name{color:#22D3EE}
 
 /* Agent thinking indicator */
 .agent-thinking{display:flex;align-items:center;gap:6px;padding:6px 10px;font-size:.72rem;color:var(--text3);animation:atp 1.5s ease infinite}
@@ -622,11 +624,12 @@ function md(t){
 
 // ═══ GROUP MODE ═══
 const AGENTS_CATALOG=[
+  {id:'strate',name:'STRATE',spec:'Assistant polyvalent, analyse globale, coordination',color:'amber',icon:'\u2728',initials:'S'},
   {id:'juriste',name:'Juriste',spec:'Droit des affaires, contrats, litiges',color:'blue',icon:'\u2696\ufe0f',initials:'JU'},
   {id:'fiscaliste',name:'Fiscaliste',spec:'Optimisation fiscale, IS, IR, TVA',color:'emerald',icon:'\ud83d\udcb0',initials:'FI'},
   {id:'comptable',name:'Comptable',spec:'BNC, bilans, charges, tr\u00e9sorerie',color:'violet',icon:'\ud83d\udcca',initials:'CO'},
   {id:'stratege',name:'Strat\u00e8ge',spec:'Business plan, positionnement, croissance',color:'rose',icon:'\ud83c\udfaf',initials:'ST'},
-  {id:'redacteur',name:'R\u00e9dacteur',spec:'Mise en forme, synth\u00e8se, communication',color:'amber',icon:'\u270d\ufe0f',initials:'RE'}
+  {id:'redacteur',name:'R\u00e9dacteur',spec:'Mise en forme, synth\u00e8se, communication',color:'cyan',icon:'\u270d\ufe0f',initials:'RE'}
 ];
 let groupMode=false,groupAgents=[];
 
@@ -634,7 +637,7 @@ function openGroupPanel(){
   closeDrawer();
   setTimeout(()=>{
     const list=document.getElementById('gp-agents');
-    const colors=['#60A5FA','#34D399','#A78BFA','#FB7185','#C9A84C'];
+    const colors=['#C9A84C','#60A5FA','#34D399','#A78BFA','#FB7185','#22D3EE'];
     list.innerHTML=AGENTS_CATALOG.map((a,i)=>`<div class="gp-agent" data-id="${a.id}" onclick="toggleAgent(this)"><span class="gpa-dot" style="background:${colors[i]}"></span><div><div class="gpa-name">${a.icon} ${a.name}</div><div class="gpa-spec">${a.spec}</div></div><span class="gpa-check">\u2713</span></div>`).join('');
     document.getElementById('gpanel').style.transform='translateX(0)';
     document.getElementById('gpanel').style.boxShadow='-4px 0 40px rgba(0,0,0,.5)';
@@ -671,7 +674,7 @@ function exitGroup(){
   document.getElementById('acb').style.display='';
   document.getElementById('group-badge').style.display='none';
 }
-function agentColor(c){return{blue:'#60A5FA',emerald:'#34D399',violet:'#A78BFA',rose:'#FB7185',amber:'#C9A84C'}[c]||'#C9A84C'}
+function agentColor(c){return{blue:'#60A5FA',emerald:'#34D399',violet:'#A78BFA',rose:'#FB7185',amber:'#C9A84C',cyan:'#22D3EE'}[c]||'#C9A84C'}
 
 // Override send for group mode
 const _origSend=send;
@@ -736,6 +739,27 @@ async function getAgentResponse(agent,question,prevContext){
   }
   // Demo mode responses
   const responses={
+    strate:q=>`## Analyse STRATE
+
+Je prends en charge votre demande de mani\u00e8re globale.
+
+### Compr\u00e9hension
+
+Votre question touche \u00e0 plusieurs dimensions : juridique, financi\u00e8re et strat\u00e9gique. C'est exactement le type de probl\u00e9matique o\u00f9 une approche multi-expert apporte le plus de valeur.
+
+### Premi\u00e8re analyse
+
+- **Faisabilit\u00e9** : Le projet est viable. Les fondamentaux sont solides.
+- **Complexit\u00e9** : Mod\u00e9r\u00e9e \u2014 quelques points d'attention \u00e0 s\u00e9curiser.
+- **Urgence** : Pas de risque imm\u00e9diat, mais une fen\u00eatre d'opportunit\u00e9 \u00e0 saisir.
+
+### Ce que je recommande
+
+Je passe la main \u00e0 mes coll\u00e8gues sp\u00e9cialistes pour approfondir chaque angle. Ensemble, nous vous fournirons une vision compl\u00e8te et actionnable.
+
+${prevContext.length>0?'Les analyses pr\u00e9c\u00e9dentes confirment cette orientation.':''}
+
+*STRATE \u2014 IA locale souveraine \u2014 Qwen3-72B \u00b7 MLX*`,
     juriste:q=>`## Analyse juridique
 
 J'ai examin\u00e9 votre demande sous l'angle du **droit des affaires**.
