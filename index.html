@@ -171,6 +171,43 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .sbtn.on{opacity:1}
 .sbtn svg{width:15px;height:15px}
 
+/* ═══ GROUP MODE ═══ */
+.group-badge{display:inline-flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:2px 8px;font-size:.65rem;color:var(--text2);letter-spacing:.03em}
+.group-badge .gb-dot{width:5px;height:5px;border-radius:50%}
+.group-header{display:flex;align-items:center;gap:6px;padding:6px 0;margin-bottom:8px}
+.group-header .gh-name{font-size:.72rem;font-weight:600;letter-spacing:.04em}
+.group-header .gh-spec{font-size:.62rem;color:var(--text2)}
+
+/* Agent colors */
+.agent-blue .av{background:rgba(59,130,246,.15)!important;color:#60A5FA!important;border-color:rgba(59,130,246,.3)!important}
+.agent-emerald .av{background:rgba(52,211,153,.15)!important;color:#34D399!important;border-color:rgba(52,211,153,.3)!important}
+.agent-violet .av{background:rgba(167,139,250,.15)!important;color:#A78BFA!important;border-color:rgba(167,139,250,.3)!important}
+.agent-rose .av{background:rgba(251,113,133,.15)!important;color:#FB7185!important;border-color:rgba(251,113,133,.3)!important}
+.agent-amber .av{background:var(--accent-dim)!important;color:var(--accent)!important;border-color:var(--border-a)!important}
+
+.agent-label{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.agent-label .al-name{font-size:.7rem;font-weight:600}
+.agent-label .al-spec{font-size:.6rem;color:var(--text3);font-style:italic}
+.agent-blue .al-name{color:#60A5FA}
+.agent-emerald .al-name{color:#34D399}
+.agent-violet .al-name{color:#A78BFA}
+.agent-rose .al-name{color:#FB7185}
+.agent-amber .al-name{color:var(--accent)}
+
+/* Agent thinking indicator */
+.agent-thinking{display:flex;align-items:center;gap:6px;padding:6px 10px;font-size:.72rem;color:var(--text3);animation:atp 1.5s ease infinite}
+@keyframes atp{0%,100%{opacity:.4}50%{opacity:1}}
+
+/* Group creation panel */
+.gp-agents{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.gp-agent{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;transition:all .15s}
+.gp-agent:active,.gp-agent.selected{border-color:var(--border-a);background:var(--accent-sub)}
+.gp-agent .gpa-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.gp-agent .gpa-name{font-size:.8rem;font-weight:500}
+.gp-agent .gpa-spec{font-size:.65rem;color:var(--text2)}
+.gp-agent .gpa-check{margin-left:auto;opacity:0;color:var(--accent);font-size:.8rem}
+.gp-agent.selected .gpa-check{opacity:1}
+
 /* Settings panel */
 .set-row{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:8px;margin-bottom:2px}
 .set-l{font-size:12px;color:var(--text)}
@@ -234,6 +271,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
     <div class="dd"></div>
     <div class="ds">
       <div class="dt">Outils</div>
+      <button class="ti" onclick="openGroupPanel()">&#129309; Groupe d'agents<span class="ti-b">NOUVEAU</span></button>
       <button class="ti">&#128196; Analyser un document<span class="ti-b">PDF &middot; DOCX</span></button>
       <button class="ti">&#128203; Mod&#232;les de prompts<span class="ti-b">12</span></button>
       <button class="ti">&#128228; Exporter la conversation<span class="ti-b">PDF &middot; MD</span></button>
@@ -262,11 +300,28 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
   <div class="df"><span>STRATE v4.0 &middot; Build local</span></div>
 </aside>
 
+<!-- GROUP CREATION PANEL -->
+<div class="dov" id="gpov" onclick="closeGroupPanel()"></div>
+<div class="drawer" id="gpanel" style="left:auto;right:0;border-right:none;border-left:1px solid var(--border)">
+  <div class="dh">
+    <div class="dl"><span class="dm" style="background:linear-gradient(135deg,#60A5FA,#A78BFA)">G</span><span class="dn">Cr&#233;er un groupe</span></div>
+    <button class="dc" onclick="closeGroupPanel()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+  </div>
+  <div class="db" style="padding:14px 16px">
+    <div style="font-size:.75rem;color:var(--text2);margin-bottom:12px">S&#233;lectionnez les agents pour votre &#233;quipe. Ils r&#233;pondront &#224; tour de r&#244;le avec leur expertise.</div>
+    <div class="gp-agents" id="gp-agents"></div>
+    <div style="margin-top:16px">
+      <button class="btn btn-success" style="width:100%;padding:10px;border:none;border-radius:10px;background:var(--accent);color:var(--bg);font-family:inherit;font-weight:600;font-size:.85rem;cursor:pointer" onclick="createGroup()">Lancer le groupe</button>
+    </div>
+  </div>
+</div>
+
 <!-- APP -->
 <div id="app">
   <div class="hd">
     <button class="mb" onclick="openDrawer()"><svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M1 1H17M1 7H11M1 13H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
     <span class="acb" id="acb">&#9878;&#65039; Juridique</span>
+    <span class="group-badge" id="group-badge" style="display:none"><span class="gb-dot" style="background:#60A5FA"></span><span class="gb-dot" style="background:#34D399"></span><span class="gb-dot" style="background:#A78BFA"></span><span id="gb-label">Groupe</span></span>
     <div class="hd-r"><div class="hd-dot"></div></div>
   </div>
 
@@ -563,6 +618,225 @@ function md(t){
   // Line breaks
   t=t.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
   return t;
+}
+
+// ═══ GROUP MODE ═══
+const AGENTS_CATALOG=[
+  {id:'juriste',name:'Juriste',spec:'Droit des affaires, contrats, litiges',color:'blue',icon:'\u2696\ufe0f',initials:'JU'},
+  {id:'fiscaliste',name:'Fiscaliste',spec:'Optimisation fiscale, IS, IR, TVA',color:'emerald',icon:'\ud83d\udcb0',initials:'FI'},
+  {id:'comptable',name:'Comptable',spec:'BNC, bilans, charges, tr\u00e9sorerie',color:'violet',icon:'\ud83d\udcca',initials:'CO'},
+  {id:'stratege',name:'Strat\u00e8ge',spec:'Business plan, positionnement, croissance',color:'rose',icon:'\ud83c\udfaf',initials:'ST'},
+  {id:'redacteur',name:'R\u00e9dacteur',spec:'Mise en forme, synth\u00e8se, communication',color:'amber',icon:'\u270d\ufe0f',initials:'RE'}
+];
+let groupMode=false,groupAgents=[];
+
+function openGroupPanel(){
+  closeDrawer();
+  const list=document.getElementById('gp-agents');
+  list.innerHTML=AGENTS_CATALOG.map(a=>`<div class="gp-agent" data-id="${a.id}" onclick="toggleAgent(this,'${a.id}')"><span class="gpa-dot" style="background:var(--${a.color==='blue'?'':a.color==='emerald'?'green':a.color==='amber'?'accent':a.color})"></span><div><div class="gpa-name">${a.icon} ${a.name}</div><div class="gpa-spec">${a.spec}</div></div><span class="gpa-check">\u2713</span></div>`).join('');
+  // Fix dot colors
+  list.querySelectorAll('.gpa-dot').forEach((dot,i)=>{
+    const colors=['#60A5FA','#34D399','#A78BFA','#FB7185','#C9A84C'];
+    dot.style.background=colors[i];
+  });
+  document.getElementById('gpanel').classList.add('on');
+  document.getElementById('gpov').classList.add('on');
+}
+function closeGroupPanel(){document.getElementById('gpanel').classList.remove('on');document.getElementById('gpov').classList.remove('on')}
+function toggleAgent(el,id){el.classList.toggle('selected')}
+function createGroup(){
+  const selected=Array.from(document.querySelectorAll('.gp-agent.selected')).map(el=>el.dataset.id);
+  if(selected.length<2){showToast('S\u00e9lectionnez au moins 2 agents');return}
+  groupAgents=selected.map(id=>AGENTS_CATALOG.find(a=>a.id===id));
+  groupMode=true;
+  // Update UI
+  document.getElementById('acb').style.display='none';
+  const badge=document.getElementById('group-badge');
+  badge.style.display='inline-flex';
+  document.getElementById('gb-label').textContent=groupAgents.length+' agents';
+  // Reset chat
+  const w=document.getElementById('wel');if(w)w.style.display='none';
+  M.querySelectorAll('.msg').forEach(m=>m.remove());
+  // Welcome group message
+  const welDiv=document.createElement('div');
+  welDiv.style.cssText='text-align:center;padding:1.5rem 1rem;opacity:0;animation:fu .5s ease forwards';
+  let agentTags=groupAgents.map(a=>`<span style="color:${agentColor(a.color)}">${a.icon} ${a.name}</span>`).join(' \u00b7 ');
+  welDiv.innerHTML=`<div style="font-size:.85rem;font-weight:500;margin-bottom:4px">\u00c9quipe constitu\u00e9e</div><div style="font-size:.75rem;color:var(--text2)">${agentTags}</div><div style="font-size:.65rem;color:var(--text3);margin-top:6px">Chaque agent r\u00e9pondra \u00e0 tour de r\u00f4le selon son expertise</div>`;
+  M.appendChild(welDiv);
+  closeGroupPanel();
+  startNewConvo();
+  showToast('Groupe cr\u00e9\u00e9 !');
+}
+function exitGroup(){
+  groupMode=false;groupAgents=[];
+  document.getElementById('acb').style.display='';
+  document.getElementById('group-badge').style.display='none';
+}
+function agentColor(c){return{blue:'#60A5FA',emerald:'#34D399',violet:'#A78BFA',rose:'#FB7185',amber:'#C9A84C'}[c]||'#C9A84C'}
+
+// Override send for group mode
+const _origSend=send;
+send=function(){
+  if(!groupMode)return _origSend();
+  const t=I.value.trim();if(!t||streaming)return;
+  const w=document.getElementById('wel');if(w)w.style.display='none';
+  M.querySelectorAll('.welcome').forEach(e=>e.remove());
+  addMsg(t,'u');I.value='';I.style.height='auto';ts();
+  doGroupStream(t);
+};
+
+async function doGroupStream(question){
+  streaming=true;
+  let prevResponses=[];
+  for(let i=0;i<groupAgents.length;i++){
+    const agent=groupAgents[i];
+    // Agent label
+    const labelDiv=document.createElement('div');
+    labelDiv.className='agent-label';
+    labelDiv.innerHTML=`<span class="al-name" style="color:${agentColor(agent.color)}">${agent.icon} ${agent.name}</span><span class="al-spec">${agent.spec}</span>`;
+    // Thinking indicator
+    const thinkDiv=document.createElement('div');
+    thinkDiv.className='agent-thinking';
+    thinkDiv.innerHTML=`<span style="color:${agentColor(agent.color)}">${agent.initials}</span> analyse...`;
+    M.appendChild(labelDiv);
+    M.appendChild(thinkDiv);
+    toBot();
+    await new Promise(r=>setTimeout(r,400+Math.random()*300));
+    thinkDiv.remove();
+    // Add message with agent styling
+    const m=document.createElement('div');
+    m.className=`msg msg-a agent-${agent.color}`;
+    const av=document.createElement('div');av.className='av';av.textContent=agent.initials;
+    const mc=document.createElement('div');mc.className='mc';
+    const bb=document.createElement('div');bb.className='bb';
+    mc.appendChild(bb);
+    const ac=document.createElement('div');ac.className='ma';ac.innerHTML='<button class="cp" onclick="cpMsg(this)">Copier</button>';
+    mc.appendChild(ac);
+    m.appendChild(av);m.appendChild(mc);M.appendChild(m);
+    // Simulate response
+    const resp=await getAgentResponse(agent,question,prevResponses);
+    let d='',tc=0;bb.classList.add('cursor-blink');
+    for(let j=0;j<resp.length;j++){
+      d+=resp[j];if(resp[j]===' ')tc++;
+      bb.innerHTML=md(d);
+      if(!scrolled)toBot();
+      const dl=resp[j]==='\n'?15:resp[j]==='.'?25:resp[j]===','?12:Math.random()*6+2;
+      await new Promise(r=>setTimeout(r,dl));
+    }
+    bb.classList.remove('cursor-blink');
+    prevResponses.push({agent:agent.name,text:resp});
+  }
+  streaming=false;saveConvo();
+}
+
+async function getAgentResponse(agent,question,prevContext){
+  // Build context string from previous agents
+  let ctx='';
+  if(prevContext.length>0){
+    ctx='\n\nContexte des agents pr\u00e9c\u00e9dents :\n'+prevContext.map(p=>`**${p.agent}** : ${p.text.slice(0,200)}...`).join('\n');
+  }
+  // Demo mode responses
+  const responses={
+    juriste:q=>`## Analyse juridique
+
+J'ai examin\u00e9 votre demande sous l'angle du **droit des affaires**.
+
+### Points cl\u00e9s
+
+- **Cadre l\u00e9gal** : Cette situation rel\u00e8ve des articles L.221-1 et suivants du Code de commerce. ${prevContext.length>0?'Je confirme l\'analyse de '+prevContext[0].agent+' et j\'ajoute la dimension contractuelle.':''}
+
+- **Risques identifi\u00e9s** : Attention \u00e0 la clause de non-concurrence et aux obligations de moyens vs r\u00e9sultats.
+
+- **Recommandation** : Formaliser par \u00e9crit avant toute action. Un avenant serait prudent.
+
+### Prochaine \u00e9tape
+Pr\u00e9parer une note juridique d\u00e9taill\u00e9e avec les r\u00e9f\u00e9rences l\u00e9gales applicables.
+
+*Analyse produite localement par votre Juriste IA.*`,
+    fiscaliste:q=>`## Impact fiscal
+
+${prevContext.length>0?'En compl\u00e9ment de l\'analyse de **'+prevContext[prevContext.length-1].agent+'**, v':'V'}oici les implications fiscales :
+
+### Enjeux
+
+- **R\u00e9gime applicable** : Selon votre structure (BNC/IS), l'impact varie consid\u00e9rablement.
+- **TVA** : Op\u00e9ration soumise \u00e0 TVA 20%. Possibilit\u00e9 de r\u00e9cup\u00e9ration sur les charges aff\u00e9rentes.
+- **D\u00e9ductibilit\u00e9** : Les frais engag\u00e9s sont d\u00e9ductibles du r\u00e9sultat imposable (art. 39-1 CGI).
+
+### Optimisation possible
+
+1. **Amortissement** : Si investissement > 500\u20ac, amortissement sur 3-5 ans
+2. **CIR/CII** : V\u00e9rifier l'\u00e9ligibilit\u00e9 au cr\u00e9dit d'imp\u00f4t recherche/innovation
+3. **Report** : Possibilit\u00e9 de reporter le d\u00e9ficit sur 6 exercices
+
+*Analyse fiscale locale \u2014 aucune donn\u00e9e transmise.*`,
+    comptable:q=>`## Vision comptable
+
+${prevContext.length>0?'Suite aux analyses pr\u00e9c\u00e9dentes, je':'Je'} traduis en chiffres :
+
+### Impacts sur les comptes
+
+| Poste | Montant estim\u00e9 | Compte |
+|-------|----------------|--------|
+| Charge directe | \u00c0 chiffrer | 6xx |
+| TVA d\u00e9ductible | 20% | 44566 |
+| Provision risque | 5-10% du montant | 681 |
+
+### Ratios \u00e0 surveiller
+
+- **Ratio d'endettement** : Rester sous 70%
+- **BFR** : Pr\u00e9voir l'impact sur la tr\u00e9sorerie \u00e0 30/60/90 jours
+- **Seuil de rentabilit\u00e9** : Recalculer avec les nouvelles charges
+
+### Recommandation
+Provisionner avant de s'engager. Je peux pr\u00e9parer un pr\u00e9visionnel d\u00e9taill\u00e9.
+
+*Traitement local \u2014 donn\u00e9es confidentielles.*`,
+    stratege:q=>`## Perspective strat\u00e9gique
+
+${prevContext.length>0?'En synth\u00e8se des analyses de '+prevContext.map(p=>p.agent).join(', ')+' \u2014 v':'V'}oici ma lecture :
+
+### Positionnement
+
+Cette d\u00e9cision s'inscrit dans une logique de **croissance ma\u00eetris\u00e9e**. Les fondamentaux sont l\u00e0, les risques identifi\u00e9s sont g\u00e9rables.
+
+### Matrice de d\u00e9cision
+
+- **Opportunit\u00e9** : Fort potentiel de diff\u00e9renciation sur le march\u00e9
+- **Timing** : Fen\u00eatre favorable (6-12 mois)
+- **Ressources** : N\u00e9cessite un investissement mod\u00e9r\u00e9 avec ROI \u00e0 M+6
+
+### Plan d'action recommand\u00e9
+
+1. **Semaine 1** : Valider le cadre juridique et fiscal
+2. **Semaine 2-3** : Pr\u00e9parer le budget et le pr\u00e9visionnel
+3. **Mois 1** : Lancer un pilote avec 2-3 clients test
+4. **Mois 3** : Go/No-Go sur le d\u00e9ploiement complet
+
+*Analyse strat\u00e9gique produite localement.*`,
+    redacteur:q=>`## Synth\u00e8se \u00e9quipe
+
+${prevContext.length>0?'Voici la consolidation des '+prevContext.length+' analyses pr\u00e9c\u00e9dentes':'Voici ma synth\u00e8se'} :
+
+### R\u00e9sum\u00e9 ex\u00e9cutif
+
+${prevContext.map(p=>'- **'+p.agent+'** : '+p.text.replace(/[#*]/g,'').split('\n').filter(l=>l.trim()).slice(1,3).join('. ').slice(0,120)+'...').join('\n')}
+
+### Points de convergence
+${prevContext.length>=2?'Les analyses convergent sur la faisabilit\u00e9 du projet avec des risques ma\u00eetris\u00e9s.':'En attente d\'autres analyses pour identifier les convergences.'}
+
+### Actions prioritaires
+
+1. **Imm\u00e9diat** \u2014 S\u00e9curiser le cadre l\u00e9gal
+2. **Court terme** \u2014 Chiffrer et budg\u00e9ter
+3. **Moyen terme** \u2014 D\u00e9ployer par phases
+
+### Document \u00e0 produire
+Je peux r\u00e9diger une note de synth\u00e8se formelle int\u00e9grant toutes les recommandations. Format : PDF professionnel, 2-3 pages.
+
+*Synth\u00e8se produite localement \u2014 \u00e9quipe STRATE.*`
+  };
+  return (responses[agent.id]||responses.stratege)(question);
 }
 
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
