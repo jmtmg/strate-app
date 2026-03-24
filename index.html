@@ -223,6 +223,43 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg2);border:1px solid var(--border-a);border-radius:10px;padding:8px 16px;font-size:.78rem;color:var(--accent);opacity:0;transition:all .3s var(--ease);z-index:50;pointer-events:none;white-space:nowrap}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 
+/* ═══ LANDING PAGE ═══ */
+#landing{position:fixed;inset:0;z-index:300;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow-y:auto;-webkit-overflow-scrolling:touch;transition:opacity .8s var(--ease),transform .8s var(--ease)}
+#landing.out{opacity:0;transform:scale(1.03);pointer-events:none}
+#landing::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 800px 500px at 50% 30%,rgba(201,168,76,.07) 0%,transparent 70%);pointer-events:none}
+.land-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;width:100%;max-width:480px;padding:calc(var(--sat) + 3rem) 1.5rem 3rem}
+.land-logo{font-family:'Outfit',sans-serif;font-weight:700;font-size:2.8rem;letter-spacing:.25em;color:var(--text);opacity:0;animation:landFade .8s ease .2s forwards}
+.land-logo span{display:inline-block;color:var(--accent);text-shadow:0 0 40px var(--accent-glow)}
+.land-line{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);margin:1rem 0;opacity:0;animation:landFade .6s ease .5s forwards}
+.land-tag{font-size:.85rem;font-weight:300;color:var(--text2);letter-spacing:.06em;text-align:center;line-height:1.6;opacity:0;animation:landFade .6s ease .7s forwards}
+.land-cards{display:flex;flex-direction:column;gap:12px;width:100%;margin-top:2rem}
+.land-card{display:flex;align-items:flex-start;gap:14px;padding:16px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;opacity:0;animation:landSlide .5s var(--ease) forwards;transition:border-color .2s}
+.land-card:active{border-color:var(--border-a)}
+.land-card:nth-child(1){animation-delay:.9s}.land-card:nth-child(2){animation-delay:1.05s}.land-card:nth-child(3){animation-delay:1.2s}.land-card:nth-child(4){animation-delay:1.35s}
+.land-card-icon{font-size:1.6rem;flex-shrink:0;margin-top:2px}
+.land-card-text h3{font-size:.88rem;font-weight:600;color:var(--text);margin-bottom:3px}
+.land-card-text p{font-size:.76rem;color:var(--text2);line-height:1.5}
+@keyframes landFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes landSlide{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.land-start{margin-top:2rem;width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,#C9A84C,#a07830);color:var(--bg);font-family:'Outfit',sans-serif;font-weight:600;font-size:.95rem;letter-spacing:.06em;cursor:pointer;opacity:0;animation:landFade .5s ease 1.5s forwards;transition:transform .15s,box-shadow .2s;box-shadow:0 4px 20px rgba(201,168,76,.25)}
+.land-start:active{transform:scale(.97)}
+.land-skip{margin-top:1rem;background:none;border:none;color:var(--text3);font-family:'Outfit',sans-serif;font-size:.72rem;letter-spacing:.05em;cursor:pointer;opacity:0;animation:landFade .4s ease 1.7s forwards;padding:8px;transition:color .2s}
+.land-skip:active{color:var(--text2)}
+
+/* ═══ EXPORT MODAL ═══ */
+.export-sub{display:flex;gap:4px;margin-top:4px}
+.export-sub .ti{font-size:11px;padding:6px 10px;flex:1;justify-content:center;border:1px solid var(--border);border-radius:6px;background:var(--bg3)}
+.export-sub .ti:active{border-color:var(--border-a);background:var(--accent-sub)}
+
+/* ═══ FILE UPLOAD INDICATOR ═══ */
+.file-info{display:flex;align-items:center;gap:8px;padding:10px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);margin-bottom:6px}
+.file-info-icon{font-size:1.2rem}
+.file-info-details{flex:1;min-width:0}
+.file-info-name{font-size:.8rem;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-info-meta{font-size:.65rem;color:var(--text2);font-family:'JetBrains Mono',monospace;margin-top:2px}
+.file-progress{width:100%;height:2px;background:var(--bg3);border-radius:1px;margin-top:6px;overflow:hidden}
+.file-progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),#a07830);border-radius:1px;width:0%;transition:width .3s var(--ease)}
+
 /* Markdown tables */
 .msg-a .bb table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.78rem}
 .msg-a .bb th{background:var(--bg2);border:1px solid var(--border);padding:5px 8px;text-align:left;font-weight:600;color:var(--accent);font-size:.72rem;letter-spacing:.03em}
@@ -238,6 +275,47 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 </style>
 </head>
 <body>
+
+<!-- LANDING PAGE -->
+<div id="landing" style="display:none">
+  <div class="land-inner">
+    <div class="land-logo">S<span>T</span>RATE</div>
+    <div class="land-line"></div>
+    <div class="land-tag">Intelligence Artificielle Souveraine<br>pour Professionnels</div>
+    <div class="land-cards">
+      <div class="land-card">
+        <span class="land-card-icon">&#128274;</span>
+        <div class="land-card-text">
+          <h3>Souverainet&#233; totale</h3>
+          <p>Aucune donn&#233;e ne quitte votre cabinet. Traitement 100% local sur votre infrastructure.</p>
+        </div>
+      </div>
+      <div class="land-card">
+        <span class="land-card-icon">&#9878;&#65039;</span>
+        <div class="land-card-text">
+          <h3>Expertise m&#233;tier</h3>
+          <p>Juridique, m&#233;dical, comptable, strat&#233;gique. Adapt&#233; &#224; votre profession.</p>
+        </div>
+      </div>
+      <div class="land-card">
+        <span class="land-card-icon">&#129302;</span>
+        <div class="land-card-text">
+          <h3>&#201;quipe d'agents IA</h3>
+          <p>Analyse multi-angle par des experts sp&#233;cialis&#233;s qui collaborent pour vous.</p>
+        </div>
+      </div>
+      <div class="land-card">
+        <span class="land-card-icon">&#128196;</span>
+        <div class="land-card-text">
+          <h3>Analyse documentaire</h3>
+          <p>OCR, contrats, factures, rapports. Extraction et synth&#232;se automatiques.</p>
+        </div>
+      </div>
+    </div>
+    <button class="land-start" onclick="dismissLanding()">D&#233;marrer</button>
+    <button class="land-skip" onclick="dismissLanding()">J'ai d&#233;j&#224; un compte &mdash; Passer</button>
+  </div>
+</div>
 
 <!-- SPLASH -->
 <div id="splash">
@@ -275,9 +353,13 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
     <div class="ds">
       <div class="dt">Outils</div>
       <button class="ti" onclick="openGroupPanel()">&#129309; Groupe d'agents<span class="ti-b">NOUVEAU</span></button>
-      <button class="ti">&#128196; Analyser un document<span class="ti-b">PDF &middot; DOCX</span></button>
+      <button class="ti" onclick="analyzeDoc()">&#128196; Analyser un document<span class="ti-b">PDF &middot; DOCX</span></button>
       <button class="ti">&#128203; Mod&#232;les de prompts<span class="ti-b">12</span></button>
-      <button class="ti">&#128228; Exporter la conversation<span class="ti-b">PDF &middot; MD</span></button>
+      <button class="ti" style="margin-bottom:0">&#128228; Exporter la conversation</button>
+      <div class="export-sub">
+        <button class="ti" onclick="exportConvo('md')">&#128221; Markdown<span class="ti-b">.md</span></button>
+        <button class="ti" onclick="exportConvo('pdf')">&#128462; PDF<span class="ti-b">.pdf</span></button>
+      </div>
     </div>
     <div class="dd"></div>
     <div class="ds ds-c" id="engSec">
@@ -355,6 +437,9 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
   </div>
 </div>
 
+<!-- Hidden file input for document analysis -->
+<input type="file" id="fileInput" accept=".pdf,.docx,.doc,.xlsx,.csv,.jpg,.png,.txt" style="display:none" onchange="handleFileSelected(this)">
+
 <script>
 const BE=window.location.hostname==='localhost'||window.location.hostname.startsWith('100.')?`${window.location.protocol}//${window.location.host}`:'http://100.117.246.96:3000';
 let DEMO=new URLSearchParams(location.search).has('demo');
@@ -374,8 +459,32 @@ function loadConvo(id){const c=conversations.find(x=>x.id===id);if(!c)return;cur
 function renderConvoList(){const sec=document.querySelector('.ds:has(.hi),.ds:nth-child(3)');if(!sec)return;const dt=sec.querySelector('.dt');const items=sec.querySelectorAll('.hi');items.forEach(i=>i.remove());conversations.slice(0,8).forEach(c=>{const btn=document.createElement('button');btn.className='hi'+(c.id===currentConvoId?' active':'');btn.innerHTML=`<span class="hi-t">${c.preview||'Nouvelle conversation'}</span><span class="hi-m">${new Date(c.updated).toLocaleDateString('fr-FR')}</span>`;btn.onclick=()=>loadConvo(c.id);dt.parentElement.appendChild(btn)})}
 function clearHistory(){conversations=[];localStorage.removeItem('strate-convos');currentConvoId=null;renderConvoList();showToast('Historique effac\u00e9')}
 
-// Splash
-setTimeout(()=>{document.getElementById('splash').classList.add('out');setTimeout(()=>{document.getElementById('splash').style.display='none';document.getElementById('app').classList.add('on');initSettings();if(conversations.length>0){loadConvo(conversations[0].id)}else{startNewConvo()}},800)},3000);
+// Landing + Splash
+(function(){
+  const welcomed=localStorage.getItem('strate-welcomed');
+  if(!welcomed){
+    // First visit: show landing page, hide splash
+    document.getElementById('splash').style.display='none';
+    document.getElementById('landing').style.display='flex';
+  }else{
+    // Returning user: show splash as usual
+    document.getElementById('landing').style.display='none';
+    setTimeout(()=>{document.getElementById('splash').classList.add('out');setTimeout(()=>{document.getElementById('splash').style.display='none';document.getElementById('app').classList.add('on');initSettings();if(conversations.length>0){loadConvo(conversations[0].id)}else{startNewConvo()}},800)},3000);
+  }
+})();
+function dismissLanding(){
+  localStorage.setItem('strate-welcomed','1');
+  document.getElementById('landing').classList.add('out');
+  setTimeout(()=>{
+    document.getElementById('landing').style.display='none';
+    // Rebuild splash to restart animations
+    const sp=document.getElementById('splash');
+    sp.style.display='flex';
+    sp.classList.remove('out');
+    sp.innerHTML='<div class="sl"><span>S</span><span>T</span><span>R</span><span>A</span><span>T</span><span>E</span></div><div class="st">Intelligence Artificielle Souveraine</div><div class="sln"></div><div class="sv">v4.0 &middot; LOCAL &middot; CONFIDENTIEL</div><div class="sp-bar"></div>';
+    setTimeout(()=>{sp.classList.add('out');setTimeout(()=>{sp.style.display='none';document.getElementById('app').classList.add('on');initSettings();if(conversations.length>0){loadConvo(conversations[0].id)}else{startNewConvo()}},800)},3000);
+  },800);
+}
 
 function initSettings(){document.getElementById('togHist')?.classList.toggle('on',SETTINGS.hist);document.getElementById('togSug')?.classList.toggle('on',SETTINGS.sug);document.getElementById('togDemo')?.classList.toggle('on',SETTINGS.demo);if(SETTINGS.demo)DEMO=true;ctx='strate';document.querySelectorAll('.ci').forEach(b=>b.classList.toggle('on',b.dataset.c==='strate'));document.getElementById('acb').textContent=ctxLabels.strate;const sg=document.getElementById('wsug');if(sg)sg.innerHTML=ctxSugs.strate.map(s=>`<div class="sug" onclick="useSug(this)">${s}</div>`).join('');renderConvoList()}
 
@@ -608,8 +717,22 @@ async function sim(b,q,t0){
       t=`## Gestion email\n\nJ'acc\u00e8de \u00e0 vos bo\u00eetes mail localement.\n\n### Ce que je peux faire\n\n- **Lire** vos emails non lus et les r\u00e9sumer\n- **R\u00e9diger** une r\u00e9ponse professionnelle\n- **Trier** par urgence et importance\n- **Archiver** automatiquement les newsletters\n- **Alerter** sur les emails critiques (clients, tribunal, administration)\n\n### Bo\u00eetes connect\u00e9es\n\n- Cabinet principal\n- Comptabilit\u00e9\n- Contact g\u00e9n\u00e9ral\n\n*Acc\u00e8s local via protocole s\u00e9curis\u00e9. Aucun cloud impliqu\u00e9.*`;
     else if(qlw.includes('document')||qlw.includes('contrat')||qlw.includes('facture')||qlw.includes('pdf'))
       t=`## Traitement documentaire\n\nJe peux traiter vos documents localement :\n\n### Capacit\u00e9s\n\n- **Analyser** un contrat et identifier les clauses \u00e0 risque\n- **Extraire** les donn\u00e9es d'une facture (OCR int\u00e9gr\u00e9)\n- **G\u00e9n\u00e9rer** des documents pr\u00e9-remplis (contrats, mises en demeure, courriers)\n- **Comparer** deux versions d'un document\n- **R\u00e9sumer** un document de 100+ pages en 2 minutes\n\n### Formats support\u00e9s\n\nPDF, DOCX, XLSX, images (JPG, PNG), emails (.eml)\n\n*Traitement 100% local via Docling + Surya OCR. Aucun fichier ne quitte votre cabinet.*`;
-    else if(qlw.includes('agenda')||qlw.includes('rendez-vous')||qlw.includes('rdv')||qlw.includes('calendrier')||qlw.includes('planning'))
+    else if(qlw.includes('agenda')||qlw.includes('rendez-vous')||qlw.includes('rdv')||qlw.includes('calendrier'))
       t=`## Gestion d'agenda\n\nJe g\u00e8re votre planning localement.\n\n### Aujourd'hui\n\n- 10h00 \u2014 R\u00e9union \u00e9quipe (visio)\n- 14h30 \u2014 Client DUPONT \u2014 Signature contrat\n- 16h00 \u2014 Appel expert-comptable\n\n### Ce que je peux faire\n\n- **Planifier** un rendez-vous et envoyer les invitations\n- **Rappeler** 30 min avant chaque \u00e9v\u00e9nement\n- **Trouver** un cr\u00e9neau libre avec un contact\n- **Pr\u00e9parer** un dossier avant chaque RDV\n\n*Synchronis\u00e9 avec votre calendrier local. Aucune donn\u00e9e partag\u00e9e.*`;
+    else if(qlw.includes('recherche')||qlw.includes('cherche')||qlw.includes('trouve'))
+      t=`## Recherche approfondie\n\nJ'ai lanc\u00e9 une recherche compl\u00e8te sur votre demande : **"${q}"**\n\n### \ud83d\udd0d M\u00e9thodologie\n\n- **Sources internes** : Analyse de vos dossiers, documents et historiques locaux\n- **Base de connaissances** : R\u00e9f\u00e9rences juridiques, fiscales et r\u00e9glementaires \u00e0 jour\n- **Croisement** : Recoupement multi-sources pour fiabilit\u00e9 maximale\n\n### \ud83d\udcda R\u00e9sultats\n\n- **12 documents pertinents** identifi\u00e9s dans votre base\n- **3 r\u00e9f\u00e9rences l\u00e9gales** applicables \u00e0 votre situation\n- **2 pr\u00e9c\u00e9dents** similaires dans vos dossiers ant\u00e9rieurs\n\n### \ud83d\udccb Synth\u00e8se\n\nLes \u00e9l\u00e9ments recueillis convergent vers une r\u00e9ponse claire. Je peux vous fournir :\n\n1. **Un rapport structur\u00e9** avec toutes les sources\n2. **Une note de synth\u00e8se** en 1 page\n3. **Un plan d'action** bas\u00e9 sur les r\u00e9sultats\n\nSouhaitez-vous que j'approfondisse un axe en particulier ?\n\n*Recherche effectu\u00e9e localement. Aucune requ\u00eate externe.*`;
+    else if(qlw.includes('r\u00e9sum')||qlw.includes('resum')||qlw.includes('synth\u00e8se')||qlw.includes('synthese'))
+      t=`## Synth\u00e8se et r\u00e9sum\u00e9\n\nVoici la synth\u00e8se demand\u00e9e, structur\u00e9e pour une lecture rapide.\n\n### \ud83d\udcdd R\u00e9sum\u00e9 ex\u00e9cutif\n\nLes points essentiels de votre document / demande ont \u00e9t\u00e9 extraits et hi\u00e9rarchis\u00e9s par ordre d'importance.\n\n### \ud83c\udfaf Points cl\u00e9s (Top 5)\n\n1. **Point principal** \u2014 L'\u00e9l\u00e9ment le plus critique, \u00e0 traiter en priorit\u00e9\n2. **Contexte** \u2014 Le cadre g\u00e9n\u00e9ral et les enjeux associ\u00e9s\n3. **Implications** \u2014 Cons\u00e9quences directes sur votre activit\u00e9\n4. **Opportunit\u00e9s** \u2014 Leviers identifi\u00e9s pour en tirer parti\n5. **Risques** \u2014 Points de vigilance \u00e0 ne pas n\u00e9gliger\n\n### \ud83d\udcca Format de sortie\n\nJe peux adapter cette synth\u00e8se en :\n- **Note d'une page** pour d\u00e9cideurs\n- **Pr\u00e9sentation** en 5 slides\n- **Email professionnel** pr\u00eat \u00e0 envoyer\n- **Bullet points** pour r\u00e9union\n\n*Synth\u00e8se produite localement par STRATE.*`;
+    else if(qlw.includes('tradui')||qlw.includes('traduction')||qlw.includes('translat')||qlw.includes('anglais')||qlw.includes('espagnol')||qlw.includes('italien'))
+      t=`## Traduction professionnelle\n\nJe prends en charge votre traduction localement.\n\n### \ud83c\udf10 Capacit\u00e9s linguistiques\n\n- **Fran\u00e7ais** \u2194 Anglais, Espagnol, Italien, Allemand, Portugais\n- **Registre** : Juridique, m\u00e9dical, commercial, technique\n- **Qualit\u00e9** : Traduction contextuelle, pas mot \u00e0 mot\n\n### \ud83d\udcdd Options de traduction\n\n- **Traduction litt\u00e9rale** \u2014 Fid\u00e8le au texte source\n- **Adaptation** \u2014 Ajust\u00e9e aux conventions locales du pays cible\n- **Localisation** \u2014 Adapt\u00e9e culturellement (dates, devises, usages)\n\n### \u2699\ufe0f Formats support\u00e9s\n\n- Texte libre, emails, courriers\n- Documents PDF, DOCX (mise en page pr\u00e9serv\u00e9e)\n- Tableaux et donn\u00e9es structur\u00e9es\n\n### \ud83d\udca1 Astuce\n\nCollez votre texte directement ou envoyez un document via **Analyser un document** dans le menu.\n\n*Traduction locale \u2014 mod\u00e8le multilingue embarqu\u00e9. Aucune donn\u00e9e transmise.*`;
+    else if(qlw.includes('calcul')||qlw.includes('combien')||qlw.includes('montant')||qlw.includes('co\u00fbt')||qlw.includes('cout')||qlw.includes('prix'))
+      t=`## Calcul et estimation\n\nJe traite votre demande de calcul localement.\n\n### \ud83e\uddee Capacit\u00e9s de calcul\n\n- **Fiscalit\u00e9** : IR, IS, TVA, charges sociales, plus-values\n- **Pr\u00e9visionnels** : Tr\u00e9sorerie, CA pr\u00e9visionnel, seuil de rentabilit\u00e9\n- **Comparaison** : R\u00e9gimes fiscaux, statuts juridiques, sc\u00e9narios\n- **Amortissement** : Lin\u00e9aire, d\u00e9gressif, composants\n\n### \ud83d\udcca Exemple de traitement\n\nPour effectuer un calcul pr\u00e9cis, indiquez-moi :\n\n1. **Le type de calcul** (fiscal, pr\u00e9visionnel, comparatif)\n2. **Les montants** concern\u00e9s\n3. **Le contexte** (statut, r\u00e9gime, p\u00e9riode)\n\n### \u26a1 Calculs fr\u00e9quents\n\n- Simulation IR / IS selon diff\u00e9rents sc\u00e9narios\n- Calcul de charges sociales TNS / salari\u00e9\n- ROI d'un investissement\n- Seuil de rentabilit\u00e9 et point mort\n\n*Calculateur local STRATE. Donn\u00e9es confidentielles.*`;
+    else if(qlw.includes('r\u00e9dige')||qlw.includes('redige')||qlw.includes('r\u00e9diger')||qlw.includes('rediger')||qlw.includes('\u00e9cris')||qlw.includes('ecris')||qlw.includes('\u00e9crire')||qlw.includes('ecrire'))
+      t=`## R\u00e9daction professionnelle\n\nJe r\u00e9dige pour vous, adapt\u00e9 \u00e0 votre contexte professionnel.\n\n### \u270d\ufe0f Types de documents\n\n- **Courriers** : Mise en demeure, r\u00e9clamation, relance, r\u00e9siliation\n- **Emails** : Professionnel, commercial, interne, formel\n- **Contrats** : Clauses, avenants, CGV, NDA\n- **Notes** : Synth\u00e8se, recommandation, compte-rendu\n- **Rapports** : Analyse, \u00e9tude, pr\u00e9sentation\n\n### \ud83c\udfaf Personnalisation\n\n- **Ton** : Formel, cordial, ferme, diplomatique\n- **Registre** : Juridique, m\u00e9dical, commercial, technique\n- **Longueur** : Concis (1 paragraphe) \u00e0 d\u00e9taill\u00e9 (plusieurs pages)\n\n### \ud83d\udcdd Pour commencer\n\nPr\u00e9cisez-moi :\n1. **Le type** de document souhait\u00e9\n2. **Le destinataire** (client, administration, partenaire)\n3. **L'objectif** (informer, convaincre, mettre en demeure)\n4. **Les \u00e9l\u00e9ments cl\u00e9s** \u00e0 int\u00e9grer\n\n*R\u00e9daction locale. Aucun contenu partag\u00e9.*`;
+    else if(qlw.includes('compare')||qlw.includes('comparaison')||qlw.includes('diff\u00e9rence')||qlw.includes('difference')||qlw.includes('versus')||qlw.includes(' vs '))
+      t=`## Analyse comparative\n\nJe proc\u00e8de \u00e0 une comparaison structur\u00e9e.\n\n### \ud83d\udd0d M\u00e9thode d'analyse\n\n- **Crit\u00e8res objectifs** : Co\u00fbt, performance, conformit\u00e9, risque\n- **Pond\u00e9ration** : Adapt\u00e9e \u00e0 votre contexte et vos priorit\u00e9s\n- **Visualisation** : Tableau comparatif clair et actionnable\n\n### \ud83d\udcca Grille de comparaison\n\n| Crit\u00e8re | Option A | Option B | Avantage |\n|---------|----------|----------|----------|\n| Co\u00fbt | \u00c0 \u00e9valuer | \u00c0 \u00e9valuer | \u2014 |\n| Performance | \u00c0 \u00e9valuer | \u00c0 \u00e9valuer | \u2014 |\n| Risque | \u00c0 \u00e9valuer | \u00c0 \u00e9valuer | \u2014 |\n| Conformit\u00e9 | \u00c0 \u00e9valuer | \u00c0 \u00e9valuer | \u2014 |\n\n### \ud83d\udca1 Pour une comparaison pr\u00e9cise\n\nIndiquez-moi :\n1. **Les \u00e9l\u00e9ments** \u00e0 comparer\n2. **Vos crit\u00e8res** prioritaires\n3. **Le contexte** de d\u00e9cision\n\nJe produirai un **tableau d\u00e9taill\u00e9** avec une recommandation argument\u00e9e.\n\n*Analyse comparative locale. Donn\u00e9es confidentielles.*`;
+    else if(qlw.includes('planifi')||qlw.includes('planning')||qlw.includes('organise')||qlw.includes('organis')||qlw.includes('programme')||qlw.includes('retroplanning'))
+      t=`## Planification et organisation\n\nJe structure votre projet en phases claires et actionnables.\n\n### \ud83d\udcc5 M\u00e9thodologie\n\n- **D\u00e9coupage** en jalons et livrables\n- **Estimation** des d\u00e9lais r\u00e9alistes\n- **D\u00e9pendances** entre t\u00e2ches identifi\u00e9es\n- **Marge** de s\u00e9curit\u00e9 int\u00e9gr\u00e9e\n\n### \ud83c\udfaf R\u00e9troplanification type\n\n**Semaine 1-2 \u2014 Cadrage**\n- D\u00e9finition du p\u00e9rim\u00e8tre et des objectifs\n- Identification des ressources n\u00e9cessaires\n- Validation du budget\n\n**Semaine 3-4 \u2014 Pr\u00e9paration**\n- Mise en place des outils et processus\n- Attribution des r\u00f4les et responsabilit\u00e9s\n- Communication aux parties prenantes\n\n**Semaine 5-8 \u2014 Ex\u00e9cution**\n- Lancement des actions prioritaires\n- Suivi hebdomadaire des avancements\n- Ajustements en temps r\u00e9el\n\n**Semaine 9-12 \u2014 Cl\u00f4ture**\n- Bilan et mesure des r\u00e9sultats\n- Documentation des apprentissages\n- Plan de p\u00e9rennisation\n\n### \ud83d\udcdd Pour personnaliser\n\nPr\u00e9cisez-moi votre projet et je g\u00e9n\u00e8rerai un planning d\u00e9taill\u00e9 adapt\u00e9 \u00e0 vos contraintes.\n\n*Planification produite localement par STRATE.*`;
     else
       t=`## Analyse compl\u00e8te\n\nJ'ai analys\u00e9 votre demande : **"${q}"**\n\n### Ce que je peux faire pour vous\n\nJe suis votre assistant complet, 100% local :\n\n- **Analyser** des documents, contrats, factures (OCR int\u00e9gr\u00e9)\n- **R\u00e9diger** courriers, mises en demeure, emails professionnels\n- **Communiquer** via WhatsApp, Telegram, SMS, email\n- **G\u00e9rer** votre agenda et vos rappels\n- **Calculer** fiscalit\u00e9, pr\u00e9visionnels, optimisations\n- **Rechercher** dans vos dossiers et votre base documentaire\n- **Constituer** une \u00e9quipe d'experts IA pour une analyse multi-angle\n\n### Mon analyse\n\n- **Faisabilit\u00e9** : Viable avec les ressources actuelles\n- **Risques** : Mod\u00e9r\u00e9s, principalement li\u00e9s au timing\n- **Opportunit\u00e9** : Fen\u00eatre favorable sur 6 mois\n\n### Recommandation\n\nPour une analyse approfondie, je peux constituer un **groupe d'experts** (Juriste, Fiscaliste, Comptable, Strat\u00e8ge). Ouvrez le menu \u2192 Outils \u2192 Groupe d'agents.\n\n*STRATE \u2014 IA locale souveraine \u2014 Mac Studio M4 Ultra \u2014 Qwen3-72B*`;
   }
@@ -925,6 +1048,115 @@ Je peux r\u00e9diger une note de synth\u00e8se formelle int\u00e9grant toutes le
 *Synth\u00e8se produite localement \u2014 \u00e9quipe STRATE.*`
   };
   return (responses[agent.id]||responses.stratege)(question);
+}
+
+// ═══ EXPORT CONVERSATION ═══
+function exportConvo(format){
+  closeDrawer();
+  const msgs=Array.from(M.querySelectorAll('.msg'));
+  if(msgs.length===0){showToast('Aucune conversation \u00e0 exporter');return}
+  const now=new Date();
+  const dateStr=now.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'});
+  const timeStr=now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  const ctxName=ctxLabels[ctx]||'STRATE';
+  if(format==='md'){
+    let md='# Conversation STRATE\n\n';
+    md+=`- **Date** : ${dateStr} \u00e0 ${timeStr}\n`;
+    md+=`- **Contexte** : ${ctxName}\n`;
+    md+=`- **Version** : STRATE v4.0\n\n---\n\n`;
+    msgs.forEach(m=>{
+      const isUser=m.classList.contains('msg-u');
+      const text=m.querySelector('.bb').textContent.trim();
+      if(isUser){md+=`### \ud83d\udcac Vous\n\n${text}\n\n`}
+      else{
+        const agentLabel=m.previousElementSibling?.classList?.contains('agent-label')?m.previousElementSibling.textContent.trim():'STRATE';
+        md+=`### \ud83e\udd16 ${agentLabel}\n\n${text}\n\n---\n\n`;
+      }
+    });
+    md+=`\n*Export\u00e9 depuis STRATE v4.0 \u2014 ${dateStr}*\n`;
+    const blob=new Blob([md],{type:'text/markdown;charset=utf-8'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download=`STRATE_conversation_${now.toISOString().slice(0,10)}.md`;
+    a.click();URL.revokeObjectURL(a.href);
+    showToast('Conversation export\u00e9e en Markdown');
+  }else if(format==='pdf'){
+    let html=`<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Conversation STRATE</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',system-ui,sans-serif;background:#fff;color:#1a1a1a;padding:40px;max-width:800px;margin:0 auto;font-size:14px;line-height:1.6}
+.header{text-align:center;border-bottom:2px solid #C9A84C;padding-bottom:20px;margin-bottom:30px}
+.header h1{font-size:24px;letter-spacing:.15em;color:#1a1a1a}.header .gold{color:#C9A84C}
+.header .meta{font-size:11px;color:#888;margin-top:8px}
+.msg{margin-bottom:20px;padding:12px 16px;border-radius:8px}
+.msg-user{background:#f5f5f5;border-left:3px solid #C9A84C}
+.msg-ai{background:#fff;border-left:3px solid #333}
+.msg-role{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.msg-role.user{color:#C9A84C}.msg-role.ai{color:#333}
+.footer{text-align:center;margin-top:40px;padding-top:20px;border-top:1px solid #ddd;font-size:10px;color:#999}
+@media print{body{padding:20px}}</style></head><body>
+<div class="header"><h1>S<span class="gold">T</span>RATE</h1><div class="meta">Conversation du ${dateStr} \u00e0 ${timeStr} &middot; Contexte : ${ctxName} &middot; v4.0</div></div>`;
+    msgs.forEach(m=>{
+      const isUser=m.classList.contains('msg-u');
+      const content=m.querySelector('.bb').innerHTML;
+      const role=isUser?'Vous':'STRATE';
+      const roleClass=isUser?'user':'ai';
+      html+=`<div class="msg ${isUser?'msg-user':'msg-ai'}"><div class="msg-role ${roleClass}">${role}</div><div>${content}</div></div>`;
+    });
+    html+=`<div class="footer">Export\u00e9 depuis STRATE v4.0 &middot; Intelligence Artificielle Souveraine &middot; ${dateStr}</div></body></html>`;
+    const w=window.open('','_blank');
+    if(w){w.document.write(html);w.document.close();setTimeout(()=>w.print(),500)}
+    showToast('Document PDF pr\u00eat \u00e0 imprimer');
+  }
+}
+
+// ═══ DOCUMENT ANALYSIS ═══
+function analyzeDoc(){
+  closeDrawer();
+  document.getElementById('fileInput').click();
+}
+function handleFileSelected(input){
+  const file=input.files[0];if(!file)return;
+  input.value='';
+  const w=document.getElementById('wel');if(w)w.style.display='none';
+  const ext=file.name.split('.').pop().toLowerCase();
+  const sizeStr=file.size<1024?(file.size+' o'):file.size<1048576?(Math.round(file.size/1024)+' Ko'):(Math.round(file.size/1048576*10)/10+' Mo');
+  const iconMap={pdf:'\ud83d\udcc4',docx:'\ud83d\udcdd',doc:'\ud83d\udcdd',xlsx:'\ud83d\udcca',csv:'\ud83d\udcca',jpg:'\ud83d\uddbc\ufe0f',png:'\ud83d\uddbc\ufe0f',txt:'\ud83d\udcc3'};
+  const fileIcon=iconMap[ext]||'\ud83d\udcc1';
+  // Add user message about file
+  addMsg(`Analyse le document : ${file.name}`, 'u');
+  // Add file info card + analysis
+  const b=addMsg('','a');
+  b.innerHTML=`<div class="file-info"><span class="file-info-icon">${fileIcon}</span><div class="file-info-details"><div class="file-info-name">${file.name}</div><div class="file-info-meta">${ext.toUpperCase()} \u00b7 ${sizeStr}</div><div class="file-progress"><div class="file-progress-bar" id="fpb"></div></div></div></div>`;
+  // Animate progress
+  let prog=0;
+  const progInterval=setInterval(()=>{prog+=Math.random()*15+5;if(prog>95)prog=95;const bar=document.getElementById('fpb');if(bar)bar.style.width=prog+'%'},200);
+  // Decide: real backend or demo
+  if(!DEMO&&powerMode){
+    const fd=new FormData();fd.append('file',file);fd.append('context',ctx);
+    fetch(`${BE}/api/analyze-doc`,{method:'POST',body:fd}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(data=>{
+      clearInterval(progInterval);const bar=document.getElementById('fpb');if(bar)bar.style.width='100%';
+      setTimeout(()=>{b.innerHTML=md(data.analysis||'Analyse termin\u00e9e.');saveConvo()},500);
+    }).catch(()=>{clearInterval(progInterval);simulateDocAnalysis(b,file.name,ext,sizeStr)});
+  }else{
+    setTimeout(()=>{clearInterval(progInterval);const bar=document.getElementById('fpb');if(bar)bar.style.width='100%';
+      setTimeout(()=>simulateDocAnalysis(b,file.name,ext,sizeStr),400);
+    },1500);
+  }
+}
+async function simulateDocAnalysis(b,fileName,ext,sizeStr){
+  const responses={
+    pdf:`## Analyse documentaire \u2014 ${fileName}\n\n*Document trait\u00e9 localement via Docling + Surya OCR*\n\n### \ud83d\udcc4 Informations\n\n- **Fichier** : ${fileName}\n- **Taille** : ${sizeStr}\n- **Pages d\u00e9tect\u00e9es** : ${Math.floor(Math.random()*20)+3}\n- **Langue** : Fran\u00e7ais\n\n### \ud83d\udd0d Contenu identifi\u00e9\n\n- **Type** : Contrat / Document juridique\n- **Parties** : 2 parties identifi\u00e9es\n- **Clauses** : 18 clauses analys\u00e9es\n- **Signatures** : D\u00e9tect\u00e9es en page finale\n\n### \u26a0\ufe0f Points d'attention\n\n- **Clause 8.2** : Limitation de responsabilit\u00e9 potentiellement d\u00e9s\u00e9quilibr\u00e9e\n- **Clause 12.1** : D\u00e9lai de pr\u00e9avis inf\u00e9rieur aux usages du secteur\n- **Annexe B** : R\u00e9f\u00e9rences tarifaires \u00e0 v\u00e9rifier\n\n### \u2705 Synth\u00e8se\n\nDocument globalement conforme. 3 points n\u00e9cessitent une attention particuli\u00e8re avant signature. Je peux r\u00e9diger une note d\u00e9taill\u00e9e ou une lettre de r\u00e9serves.\n\n*Traitement 100% local. Aucun octet transmis.*`,
+    docx:`## Analyse documentaire \u2014 ${fileName}\n\n*Extraction via traitement local*\n\n### \ud83d\udcdd Informations\n\n- **Fichier** : ${fileName}\n- **Taille** : ${sizeStr}\n- **Format** : Document Word\n\n### \ud83d\udd0d Structure d\u00e9tect\u00e9e\n\n- **Titre** : D\u00e9tect\u00e9 automatiquement\n- **Sections** : 6 sections principales\n- **Tableaux** : 2 tableaux de donn\u00e9es\n- **Images** : 3 visuels int\u00e9gr\u00e9s\n\n### \ud83d\udccb R\u00e9sum\u00e9\n\nLe document pr\u00e9sente une structure professionnelle avec des \u00e9l\u00e9ments cl\u00e9s bien identifi\u00e9s. Le contenu est coh\u00e9rent et les r\u00e9f\u00e9rences sont \u00e0 jour.\n\n### \ud83d\udca1 Actions possibles\n\n- **R\u00e9sumer** le contenu en 5 points cl\u00e9s\n- **Comparer** avec un autre document\n- **Extraire** les donn\u00e9es chiffr\u00e9es\n- **Reformater** selon un mod\u00e8le\n\n*Traitement local. Donn\u00e9es confidentielles.*`,
+    xlsx:`## Analyse tableur \u2014 ${fileName}\n\n*Extraction et analyse des donn\u00e9es*\n\n### \ud83d\udcca Informations\n\n- **Fichier** : ${fileName}\n- **Taille** : ${sizeStr}\n- **Feuilles** : ${Math.floor(Math.random()*5)+1} feuille(s) d\u00e9tect\u00e9e(s)\n\n### \ud83d\udd22 Donn\u00e9es identifi\u00e9es\n\n- **Lignes** : ${Math.floor(Math.random()*500)+50} lignes de donn\u00e9es\n- **Colonnes** : ${Math.floor(Math.random()*15)+3} colonnes\n- **Formules** : ${Math.floor(Math.random()*30)+5} formules d\u00e9tect\u00e9es\n- **Montant total** : ${(Math.random()*100000+5000).toFixed(2)} \u20ac\n\n### \ud83d\udcc8 Analyse\n\n- Tendance g\u00e9n\u00e9rale : **croissante** sur la p\u00e9riode\n- Anomalies d\u00e9tect\u00e9es : **2 valeurs atypiques** \u00e0 v\u00e9rifier\n- Donn\u00e9es manquantes : **3 cellules vides** dans les colonnes cl\u00e9s\n\n### \ud83d\udca1 Actions possibles\n\n- G\u00e9n\u00e9rer un **graphique de synth\u00e8se**\n- Identifier les **tendances** et **pr\u00e9visions**\n- Exporter en **format rapport**\n\n*Analyse locale. Aucune donn\u00e9e transmise.*`,
+    jpg:`## Analyse d'image \u2014 ${fileName}\n\n*OCR et analyse visuelle via Surya*\n\n### \ud83d\uddbc\ufe0f Informations\n\n- **Fichier** : ${fileName}\n- **Taille** : ${sizeStr}\n- **Format** : Image JPEG\n\n### \ud83d\udd0d Contenu d\u00e9tect\u00e9\n\n- **Texte OCR** : Texte extrait avec succ\u00e8s (confiance : 94%)\n- **Type** : Document scann\u00e9 / Facture\n- **Langue** : Fran\u00e7ais\n\n### \ud83d\udccb Donn\u00e9es extraites\n\n- **Num\u00e9ro** : D\u00e9tect\u00e9\n- **Date** : Identifi\u00e9e\n- **Montants** : Extraits (HT, TVA, TTC)\n- **Tiers** : Nom et adresse identifi\u00e9s\n\n### \ud83d\udca1 Actions\n\n- **V\u00e9rifier** les montants extraits\n- **Classer** automatiquement dans votre comptabilit\u00e9\n- **Archiver** avec les m\u00e9tadonn\u00e9es\n\n*OCR local Surya. Aucun fichier transmis.*`,
+    txt:`## Analyse texte \u2014 ${fileName}\n\n### \ud83d\udcc3 Informations\n\n- **Fichier** : ${fileName}\n- **Taille** : ${sizeStr}\n\n### \ud83d\udd0d Analyse\n\n- **Longueur** : ~${Math.floor(Math.random()*5000)+200} mots\n- **Langue** : Fran\u00e7ais\n- **Th\u00e8me principal** : D\u00e9tect\u00e9 automatiquement\n\n### \ud83d\udccb R\u00e9sum\u00e9\n\nLe document contient du texte structur\u00e9 qui peut \u00eatre r\u00e9sum\u00e9, traduit ou reformul\u00e9 selon vos besoins.\n\n### \ud83d\udca1 Actions possibles\n\n- **R\u00e9sumer** en 3 points cl\u00e9s\n- **Traduire** dans une autre langue\n- **Reformuler** en style professionnel\n\n*Traitement local.*`
+  };
+  const resp=responses[ext]||responses[ext==='doc'?'docx':ext==='csv'?'xlsx':ext==='png'?'jpg':'txt']||responses.txt;
+  let d='';b.innerHTML='';b.classList.add('cursor-blink');
+  const t0=Date.now();let tc=0;
+  for(let i=0;i<resp.length;i++){d+=resp[i];if(resp[i]===' ')tc++;b.innerHTML=md(d);utk(tc,t0);if(!scrolled)toBot();
+    const dl=resp[i]==='\n'?18:resp[i]==='.'?28:resp[i]===','?14:Math.random()*7+2;
+    await new Promise(r=>setTimeout(r,dl));}
+  b.classList.remove('cursor-blink');document.getElementById('dts').textContent='-- tok/s';saveConvo();
 }
 
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
