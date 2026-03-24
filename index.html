@@ -260,7 +260,8 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
   <div class="db">
     <div class="ds">
       <div class="dt">Contexte actif</div>
-      <button class="ci on" data-c="legal" onclick="pickCtx(this,'legal')"><span class="ci-i">&#9878;&#65039;</span><div><span class="ci-n">Juridique</span><span class="ci-d">Contrats, conformit&#233;, litiges</span></div><span class="ci-c">&#10003;</span></button>
+      <button class="ci on" data-c="strate" onclick="pickCtx(this,'strate')"><span class="ci-i">&#10024;</span><div><span class="ci-n">STRATE</span><span class="ci-d">Assistant polyvalent, analyse globale</span></div><span class="ci-c">&#10003;</span></button>
+      <button class="ci" data-c="legal" onclick="pickCtx(this,'legal')"><span class="ci-i">&#9878;&#65039;</span><div><span class="ci-n">Juridique</span><span class="ci-d">Contrats, conformit&#233;, litiges</span></div><span class="ci-c">&#10003;</span></button>
       <button class="ci" data-c="medical" onclick="pickCtx(this,'medical')"><span class="ci-i">&#129658;</span><div><span class="ci-n">M&#233;dical</span><span class="ci-d">CRH, ordonnances, protocoles</span></div><span class="ci-c">&#10003;</span></button>
       <button class="ci" data-c="accounting" onclick="pickCtx(this,'accounting')"><span class="ci-i">&#128202;</span><div><span class="ci-n">Comptable</span><span class="ci-d">BNC, IS, optimisation fiscale</span></div><span class="ci-c">&#10003;</span></button>
       <button class="ci" data-c="business" onclick="pickCtx(this,'business')"><span class="ci-i">&#128640;</span><div><span class="ci-n">Business</span><span class="ci-d">Strat&#233;gie, cr&#233;ation, d&#233;veloppement</span></div><span class="ci-c">&#10003;</span></button>
@@ -322,7 +323,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 <div id="app">
   <div class="hd">
     <button class="mb" onclick="openDrawer()"><svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M1 1H17M1 7H11M1 13H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
-    <span class="acb" id="acb">&#9878;&#65039; Juridique</span>
+    <span class="acb" id="acb">&#10024; STRATE</span>
     <span class="group-badge" id="group-badge" style="display:none"><span class="gb-dot" style="background:#60A5FA"></span><span class="gb-dot" style="background:#34D399"></span><span class="gb-dot" style="background:#A78BFA"></span><span id="gb-label">Groupe</span></span>
     <div class="hd-r"><div class="hd-dot"></div></div>
   </div>
@@ -333,9 +334,9 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
       <h2>Bonjour</h2>
       <p>Votre assistant IA local et confidentiel. Aucune donn&#233;e ne quitte votre cabinet.</p>
       <div class="w-sug" id="wsug">
-        <div class="sug" onclick="useSug(this)">Analysez ce contrat et identifiez les clauses abusives</div>
-        <div class="sug" onclick="useSug(this)">R&#233;digez une mise en demeure pour impay&#233;</div>
-        <div class="sug" onclick="useSug(this)">Quels sont les d&#233;lais de prescription commerciale ?</div>
+        <div class="sug" onclick="useSug(this)">Analysez ma situation et conseillez-moi</div>
+        <div class="sug" onclick="useSug(this)">Quelles sont mes options pour d&#233;velopper mon activit&#233; ?</div>
+        <div class="sug" onclick="useSug(this)">Cr&#233;ez un groupe d'experts pour &#233;tudier mon dossier</div>
       </div>
     </div>
   </div>
@@ -376,7 +377,7 @@ setTimeout(()=>{document.getElementById('splash').classList.add('out');setTimeou
 function initSettings(){document.getElementById('togHist')?.classList.toggle('on',SETTINGS.hist);document.getElementById('togSug')?.classList.toggle('on',SETTINGS.sug);document.getElementById('togDemo')?.classList.toggle('on',SETTINGS.demo);if(SETTINGS.demo)DEMO=true;renderConvoList()}
 
 // State
-let streaming=false,scrolled=false,ctx='legal';
+let streaming=false,scrolled=false,ctx='strate';
 const M=document.getElementById('msgs'),I=document.getElementById('inp'),S=document.getElementById('snd'),SB=document.getElementById('sb');
 
 // Drawer
@@ -384,8 +385,9 @@ function openDrawer(){document.getElementById('drawer').classList.add('on');docu
 function closeDrawer(){document.getElementById('drawer').classList.remove('on');document.getElementById('dov').classList.remove('on')}
 
 // Context
-const ctxLabels={legal:'\u2696\ufe0f Juridique',medical:'\ud83e\ude7a M\u00e9dical',accounting:'\ud83d\udcca Comptable',business:'\ud83d\ude80 Business'};
+const ctxLabels={strate:'\u2728 STRATE',legal:'\u2696\ufe0f Juridique',medical:'\ud83e\ude7a M\u00e9dical',accounting:'\ud83d\udcca Comptable',business:'\ud83d\ude80 Business'};
 const ctxSugs={
+  strate:['Analysez ma situation et conseillez-moi','Quelles sont mes options pour d\u00e9velopper mon activit\u00e9 ?','Cr\u00e9ez un groupe d\u2019experts pour \u00e9tudier mon dossier'],
   legal:['Analysez ce contrat et identifiez les clauses abusives','R\u00e9digez une mise en demeure pour impay\u00e9','Quels sont les d\u00e9lais de prescription commerciale ?'],
   medical:['R\u00e9sumez ce compte-rendu d\'hospitalisation','Recommandations HAS pour le diab\u00e8te de type 2','Aidez-moi \u00e0 r\u00e9diger un certificat m\u00e9dical'],
   accounting:['Calculez l\'optimisation fiscale pour un BNC \u00e0 80K\u20ac','Charges d\u00e9ductibles en micro-BNC ?','Pr\u00e9parez un pr\u00e9visionnel sur 3 ans'],
@@ -583,7 +585,8 @@ J'ai analys\u00e9 votre demande selon la m\u00e9thodologie **Lean Canvas** et le
 async function sim(b,q,t0){
   const ql=q.toLowerCase();
   let t;
-  if(ctx==='legal'||ql.includes('contrat')||ql.includes('clause')||ql.includes('demeure'))t=EX.legal;
+  if(ctx==='strate')t=`## Analyse compl\u00e8te\n\nJ'ai analys\u00e9 votre demande : **"${q}"**\n\nVoici mon \u00e9valuation globale :\n\n### Points cl\u00e9s\n\n- **Faisabilit\u00e9** : Le projet est viable avec les ressources actuelles\n- **Risques** : Mod\u00e9r\u00e9s, principalement li\u00e9s au timing et \u00e0 la r\u00e9glementation\n- **Opportunit\u00e9** : Fen\u00eatre favorable sur les 6 prochains mois\n\n### Recommandations\n\n1. **S\u00e9curiser le cadre juridique** \u2014 contrats et conformit\u00e9\n2. **Chiffrer pr\u00e9cis\u00e9ment** \u2014 budget, tr\u00e9sorerie, ROI\n3. **Tester rapidement** \u2014 pilote avec 2-3 clients\n4. **Structurer l'\u00e9quipe** \u2014 r\u00f4les et responsabilit\u00e9s\n\n### Pour aller plus loin\n\nJe peux constituer un **groupe d'experts** (Juriste, Fiscaliste, Comptable, Strat\u00e8ge) pour approfondir chaque angle. Utilisez l'outil \\"Groupe d'agents\\" dans le menu.\n\n*STRATE \u2014 IA locale souveraine \u2014 Qwen3-72B \u00b7 MLX*`;
+  else if(ctx==='legal'||ql.includes('contrat')||ql.includes('clause')||ql.includes('demeure'))t=EX.legal;
   else if(ctx==='medical'||ql.includes('m\u00e9dical')||ql.includes('hospital')||ql.includes('patient'))t=EX.medical;
   else if(ctx==='accounting'||ql.includes('fiscal')||ql.includes('bnc')||ql.includes('comptab')||ql.includes('optimisation'))t=EX.accounting;
   else if(ctx==='business'||ql.includes('business')||ql.includes('lancer')||ql.includes('entreprise')||ql.includes('strat\u00e9g')||ql.includes('march\u00e9')||ql.includes('projet'))t=EX.business;
