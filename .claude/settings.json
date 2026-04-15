@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -lc 'if [ -f graphify-out/graph.json ] || [ -f graphify-out/GRAPH_REPORT.md ]; then echo \"Graphify disponible sur ce repo. Pour toute exploration structurelle large, consulter graphify-out/GRAPH_REPORT.md ou /graphify query avant Glob/Grep.\"; fi'"
+          }
+        ]
+      }
+    ]
+  }
+}
